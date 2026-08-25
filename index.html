@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+
+  <title>Escanear código QR</title>
+
+  <script src="https://unpkg.com/html5-qrcode"
+          type="text/javascript"></script>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      font-family: Arial, Helvetica, sans-serif;
+
+      background: #f4f1ed;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      padding: 20px;
+
+      color: #292522;
+    }
+
+    .tarjeta {
+      width: 100%;
+      max-width: 430px;
+
+      background: white;
+
+      border: 1px solid #e5e0da;
+
+      border-radius: 20px;
+
+      padding: 30px 25px;
+
+      box-shadow:
+        0 10px 30px rgba(0,0,0,0.06);
+
+      text-align: center;
+    }
+
+    .institucion {
+      font-size: 13px;
+
+      font-weight: 700;
+
+      letter-spacing: 1px;
+
+      line-height: 1.5;
+
+      text-transform: uppercase;
+    }
+
+    .linea {
+      width: 45px;
+      height: 2px;
+
+      background: #80624b;
+
+      margin: 20px auto 25px;
+    }
+
+    h1 {
+      font-size: 24px;
+
+      font-weight: 600;
+
+      margin: 0 0 8px;
+    }
+
+    .descripcion {
+      color: #8a837c;
+
+      font-size: 14px;
+
+      margin-bottom: 25px;
+    }
+
+    #reader {
+      width: 100%;
+
+      overflow: hidden;
+
+      border-radius: 14px;
+    }
+
+    .mensaje {
+      margin-top: 20px;
+
+      font-size: 14px;
+
+      color: #8a837c;
+
+      line-height: 1.5;
+    }
+
+    .volver {
+      display: block;
+
+      width: 100%;
+
+      margin-top: 20px;
+
+      padding: 14px;
+
+      border-radius: 10px;
+
+      background: #292522;
+
+      color: white;
+
+      text-decoration: none;
+
+      font-size: 14px;
+
+      font-weight: 600;
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <div class="tarjeta">
+
+
+    <div class="institucion">
+
+      INSTITUCIÓN EDUCATIVA 7701<br>
+
+      "NUESTRA SEÑORA DEL CARMEN"
+
+    </div>
+
+
+    <div class="linea"></div>
+
+
+    <h1>
+      Escanear código QR
+    </h1>
+
+
+    <div class="descripcion">
+
+      Apunta la cámara hacia el código QR del alumno.
+
+    </div>
+
+
+    <div id="reader"></div>
+
+
+    <div
+      class="mensaje"
+      id="mensaje">
+
+      Solicitando acceso a la cámara...
+
+    </div>
+
+
+    <a
+      class="volver"
+      href="https://script.google.com">
+
+      Volver
+
+    </a>
+
+
+  </div>
+
+
+<script>
+
+
+  function iniciarScanner() {
+
+
+    const mensaje =
+      document.getElementById("mensaje");
+
+
+    const scanner =
+      new Html5Qrcode("reader");
+
+
+    scanner.start(
+
+      {
+        facingMode: "environment"
+      },
+
+      {
+        fps: 10,
+
+        qrbox: {
+          width: 250,
+          height: 250
+        }
+
+      },
+
+      function(decodedText) {
+
+
+        mensaje.innerText =
+          "Código detectado. Abriendo...";
+
+
+        scanner.stop()
+          .then(function() {
+
+            window.location.href =
+              decodedText;
+
+          })
+          .catch(function() {
+
+            window.location.href =
+              decodedText;
+
+          });
+
+
+      },
+
+      function(errorMessage) {
+
+        // Ignorar errores normales
+        // mientras busca el QR
+
+      }
+
+    )
+
+    .then(function() {
+
+      mensaje.innerText =
+        "Apunta la cámara hacia el código QR.";
+
+    })
+
+    .catch(function(error) {
+
+      mensaje.innerText =
+        "No se pudo acceder a la cámara. " +
+        "Revisa los permisos del navegador.";
+
+    });
+
+
+  }
+
+
+  iniciarScanner();
+
+
+</script>
+
+
+</body>
+
+</html>
