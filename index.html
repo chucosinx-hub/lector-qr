@@ -45,7 +45,7 @@
       width: 100%;
       max-width: 430px;
 
-      background: white;
+      background: #ffffff;
 
       border: 1px solid #e5e0da;
 
@@ -127,7 +127,7 @@
 
       background: #292522;
 
-      color: white;
+      color: #ffffff;
 
       text-decoration: none;
 
@@ -189,9 +189,9 @@
     </div>
 
 
-    <!-- ============================= -->
+    <!-- ================================= -->
     <!-- VOLVER AL PANEL DE PROFESORES -->
-    <!-- ============================= -->
+    <!-- ================================= -->
 
     <a
       class="volver"
@@ -213,7 +213,6 @@
   // ==========================================
 
   function iniciarScanner() {
-
 
     const mensaje =
       document.getElementById("mensaje");
@@ -241,7 +240,6 @@
 
       function(decodedText) {
 
-
         mensaje.innerText =
           "Código detectado. Abriendo...";
 
@@ -262,13 +260,12 @@
 
           });
 
-
       },
 
       function(errorMessage) {
 
-        // Los errores mientras busca
-        // un QR se ignoran.
+        // Ignorar errores normales
+        // mientras busca el código QR.
 
       }
 
@@ -283,12 +280,13 @@
 
     .catch(function(error) {
 
+      console.error(error);
+
       mensaje.innerText =
         "No se pudo acceder a la cámara. " +
         "Revisa los permisos del navegador.";
 
     });
-
 
   }
 
