@@ -2,6 +2,7 @@
 <html lang="es">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta name="viewport"
@@ -9,8 +10,10 @@
 
   <title>Escanear código QR</title>
 
-  <script src="https://unpkg.com/html5-qrcode"
-          type="text/javascript"></script>
+  <script
+    src="https://unpkg.com/html5-qrcode"
+    type="text/javascript">
+  </script>
 
   <style>
 
@@ -22,7 +25,10 @@
       margin: 0;
       min-height: 100vh;
 
-      font-family: Arial, Helvetica, sans-serif;
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
       background: #f4f1ed;
 
@@ -128,6 +134,12 @@
       font-size: 14px;
 
       font-weight: 600;
+
+      cursor: pointer;
+    }
+
+    .volver:hover {
+      background: #403a35;
     }
 
   </style>
@@ -177,9 +189,13 @@
     </div>
 
 
+    <!-- ============================= -->
+    <!-- VOLVER AL PANEL DE PROFESORES -->
+    <!-- ============================= -->
+
     <a
       class="volver"
-      href="https://script.google.com">
+      href="https://script.google.com/macros/s/AKfycbzp2d4YYjKEcvn3qQJhp7yDtLeBD01AOko_EUUHoN5drXjmNsLIj-RcIiC9aah4Deqp/exec">
 
       Volver
 
@@ -191,6 +207,10 @@
 
 <script>
 
+
+  // ==========================================
+  // INICIAR ESCÁNER
+  // ==========================================
 
   function iniciarScanner() {
 
@@ -227,12 +247,14 @@
 
 
         scanner.stop()
+
           .then(function() {
 
             window.location.href =
               decodedText;
 
           })
+
           .catch(function() {
 
             window.location.href =
@@ -245,8 +267,8 @@
 
       function(errorMessage) {
 
-        // Ignorar errores normales
-        // mientras busca el QR
+        // Los errores mientras busca
+        // un QR se ignoran.
 
       }
 
@@ -270,6 +292,10 @@
 
   }
 
+
+  // ==========================================
+  // INICIAR AUTOMÁTICAMENTE
+  // ==========================================
 
   iniciarScanner();
 
