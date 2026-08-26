@@ -136,6 +136,8 @@
       font-weight: 600;
 
       cursor: pointer;
+
+      border: none;
     }
 
     .volver:hover {
@@ -189,17 +191,18 @@
     </div>
 
 
-    <!-- ================================= -->
-    <!-- VOLVER AL PANEL DE PROFESORES -->
-    <!-- ================================= -->
+    <!-- ============================== -->
+    <!-- BOTÓN VOLVER -->
+    <!-- ============================== -->
 
-    <a
+    <button
+      type="button"
       class="volver"
-      href="https://script.google.com/macros/s/AKfycbzp2d4YYjKEcvn3qQJhp7yDtLeBD01AOko_EUUHoN5drXjmNsLIj-RcIiC9aah4Deqp/exec">
+      onclick="volverProfesores()">
 
       Volver
 
-    </a>
+    </button>
 
 
   </div>
@@ -209,7 +212,26 @@
 
 
   // ==========================================
-  // INICIAR ESCÁNER
+  // URL DEL PANEL DE PROFESORES
+  // ==========================================
+
+  const URL_PROFESORES =
+    "https://script.google.com/macros/s/AKfycbzp2d4YYjKEcvn3qQJhp7yDtLeBD01AOko_EUUHoN5drXjmNsLIj-RcIiC9aah4Deqp/exec";
+
+
+  // ==========================================
+  // VOLVER AL PANEL
+  // ==========================================
+
+  function volverProfesores() {
+
+    window.location.replace(URL_PROFESORES);
+
+  }
+
+
+  // ==========================================
+  // INICIAR SCANNER
   // ==========================================
 
   function iniciarScanner() {
