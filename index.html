@@ -129,15 +129,13 @@
 
       color: #ffffff;
 
-      text-decoration: none;
+      border: none;
 
       font-size: 14px;
 
       font-weight: 600;
 
       cursor: pointer;
-
-      border: none;
     }
 
     .volver:hover {
@@ -191,14 +189,14 @@
     </div>
 
 
-    <!-- ============================== -->
-    <!-- BOTÓN VOLVER -->
-    <!-- ============================== -->
+    <!-- ================================= -->
+    <!-- VOLVER -->
+    <!-- ================================= -->
 
     <button
       type="button"
       class="volver"
-      onclick="volverProfesores()">
+      onclick="volver()">
 
       Volver
 
@@ -212,26 +210,47 @@
 
 
   // ==========================================
-  // URL DEL PANEL DE PROFESORES
+  // VOLVER A LA PESTAÑA DEL PANEL
   // ==========================================
 
-  const URL_PROFESORES =
-    "https://script.google.com/macros/s/AKfycbzp2d4YYjKEcvn3qQJhp7yDtLeBD01AOko_EUUHoN5drXjmNsLIj-RcIiC9aah4Deqp/exec";
+  function volver() {
+
+    try {
+
+      // Detener el escáner antes de salir
+      if (window.scannerQR) {
+
+        window.scannerQR.stop()
+          .catch(function() {});
+
+      }
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
 
 
-  // ==========================================
-  // VOLVER AL PANEL
-  // ==========================================
+    // Intentar cerrar esta pestaña
+    window.close();
 
-  function volverProfesores() {
 
-    window.location.replace(URL_PROFESORES);
+    // Si el navegador no permite cerrarla,
+    // mostrar mensaje para volver manualmente.
+
+    setTimeout(function() {
+
+      document.getElementById("mensaje").innerText =
+        "Puedes cerrar esta pestaña para volver al panel de profesores.";
+
+    }, 300);
 
   }
 
 
   // ==========================================
-  // INICIAR SCANNER
+  // INICIAR ESCÁNER
   // ==========================================
 
   function iniciarScanner() {
@@ -242,6 +261,10 @@
 
     const scanner =
       new Html5Qrcode("reader");
+
+
+    // Guardar scanner globalmente
+    window.scannerQR = scanner;
 
 
     scanner.start(
@@ -287,7 +310,7 @@
       function(errorMessage) {
 
         // Ignorar errores normales
-        // mientras busca el código QR.
+        // mientras busca el QR.
 
       }
 
