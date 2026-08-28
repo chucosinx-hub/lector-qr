@@ -8,12 +8,10 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1">
 
-  <title>Escanear código QR</title>
+  <title>Escanear QR</title>
 
-  <script
-    src="https://unpkg.com/html5-qrcode"
-    type="text/javascript">
-  </script>
+  <script src="https://unpkg.com/html5-qrcode"
+          type="text/javascript"></script>
 
   <style>
 
@@ -24,327 +22,333 @@
     body {
       margin: 0;
       min-height: 100vh;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
+      font-family: Arial, Helvetica, sans-serif;
       background: #f4f1ed;
-
       display: flex;
       justify-content: center;
       align-items: center;
-
-      padding: 20px;
-
+      padding: 24px;
       color: #292522;
     }
 
-    .tarjeta {
+    .contenedor {
       width: 100%;
       max-width: 430px;
+    }
 
+    .tarjeta {
       background: #ffffff;
-
       border: 1px solid #e5e0da;
-
       border-radius: 20px;
-
-      padding: 30px 25px;
-
-      box-shadow:
-        0 10px 30px rgba(0,0,0,0.06);
-
-      text-align: center;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
     }
 
     .institucion {
+      text-align: center;
+      color: #292522;
       font-size: 13px;
-
       font-weight: 700;
-
       letter-spacing: 1px;
-
       line-height: 1.5;
-
-      text-transform: uppercase;
     }
 
     .linea {
       width: 45px;
       height: 2px;
-
       background: #80624b;
-
-      margin: 20px auto 25px;
+      margin: 22px auto 28px;
     }
 
     h1 {
-      font-size: 24px;
-
+      text-align: center;
+      font-size: 25px;
       font-weight: 600;
-
-      margin: 0 0 8px;
+      margin: 0 0 10px;
     }
 
-    .descripcion {
+    .texto {
+      text-align: center;
       color: #8a837c;
-
       font-size: 14px;
-
-      margin-bottom: 25px;
+      line-height: 1.5;
+      margin-bottom: 20px;
     }
 
-    #reader {
+    #lectorQR {
       width: 100%;
-
       overflow: hidden;
-
       border-radius: 14px;
     }
 
-    .mensaje {
-      margin-top: 20px;
-
-      font-size: 14px;
-
-      color: #8a837c;
-
-      line-height: 1.5;
-    }
-
     .volver {
-      display: block;
-
       width: 100%;
-
-      margin-top: 20px;
-
-      padding: 14px;
-
+      height: 46px;
+      margin-top: 18px;
+      border: 1px solid #dcd6d0;
       border-radius: 10px;
-
-      background: #292522;
-
-      color: #ffffff;
-
-      border: none;
-
+      background: #ffffff;
+      color: #514a44;
       font-size: 14px;
-
       font-weight: 600;
-
       cursor: pointer;
     }
 
     .volver:hover {
-      background: #403a35;
+      background: #f7f4f1;
     }
 
   </style>
 
 </head>
 
-
 <body>
 
+  <div class="contenedor">
 
-  <div class="tarjeta">
+    <div class="tarjeta">
 
+      <div class="institucion">
 
-    <div class="institucion">
+        INSTITUCIÓN EDUCATIVA 7701<br>
 
-      INSTITUCIÓN EDUCATIVA 7701<br>
+        "NUESTRA SEÑORA DEL CARMEN"
 
-      "NUESTRA SEÑORA DEL CARMEN"
+      </div>
 
-    </div>
+      <div class="linea"></div>
 
+      <h1>
+        Escanear código QR
+      </h1>
 
-    <div class="linea"></div>
+      <div class="texto">
 
+        Apunta la cámara hacia el código QR del alumno.
 
-    <h1>
-      Escanear código QR
-    </h1>
+      </div>
 
+      <div id="lectorQR"></div>
 
-    <div class="descripcion">
+      <button
+        class="volver"
+        onclick="volverAlPanel()">
 
-      Apunta la cámara hacia el código QR del alumno.
+        Volver al panel
 
-    </div>
-
-
-    <div id="reader"></div>
-
-
-    <div
-      class="mensaje"
-      id="mensaje">
-
-      Solicitando acceso a la cámara...
+      </button>
 
     </div>
-
-
-    <!-- ================================= -->
-    <!-- VOLVER -->
-    <!-- ================================= -->
-
-    <button
-      type="button"
-      class="volver"
-      onclick="volver()">
-
-      Volver
-
-    </button>
-
 
   </div>
 
 
-<script>
+  <script>
+
+    let scanner = null;
 
 
-  // ==========================================
-  // VOLVER A LA PESTAÑA DEL PANEL
-  // ==========================================
+    // ==========================================
+    // URL CORRECTA DEL PANEL DE PROFESORES
+    // ==========================================
 
-  function volver() {
-
-    try {
-
-      // Detener el escáner antes de salir
-      if (window.scannerQR) {
-
-        window.scannerQR.stop()
-          .catch(function() {});
-
-      }
-
-    } catch (error) {
-
-      console.log(error);
-
-    }
+    const URL_APPS_SCRIPT =
+      "https://script.google.com/macros/s/AKfycbwNwcizIghVwKUjZB-kdZEkWG1uewXd2VVaP_AFascrsH2NtFZ0ygN_4juO7L8n-Lbm/exec";
 
 
-    // Intentar cerrar esta pestaña
-    window.close();
+    // ==========================================
+    // INICIAR SCANNER
+    // ==========================================
+
+    window.addEventListener(
+      "load",
+      iniciarScanner
+    );
 
 
-    // Si el navegador no permite cerrarla,
-    // mostrar mensaje para volver manualmente.
+    function iniciarScanner() {
 
-    setTimeout(function() {
-
-      document.getElementById("mensaje").innerText =
-        "Puedes cerrar esta pestaña para volver al panel de profesores.";
-
-    }, 300);
-
-  }
+      scanner =
+        new Html5Qrcode("lectorQR");
 
 
-  // ==========================================
-  // INICIAR ESCÁNER
-  // ==========================================
+      const configuracion = {
 
-  function iniciarScanner() {
-
-    const mensaje =
-      document.getElementById("mensaje");
-
-
-    const scanner =
-      new Html5Qrcode("reader");
-
-
-    // Guardar scanner globalmente
-    window.scannerQR = scanner;
-
-
-    scanner.start(
-
-      {
-        facingMode: "environment"
-      },
-
-      {
         fps: 10,
 
         qrbox: {
           width: 250,
           height: 250
-        }
+        },
 
-      },
+        aspectRatio: 1.0
 
-      function(decodedText) {
-
-        mensaje.innerText =
-          "Código detectado. Abriendo...";
+      };
 
 
-        scanner.stop()
+      scanner
+        .start(
 
-          .then(function() {
+          {
+            facingMode: "environment"
+          },
 
-            window.location.href =
-              decodedText;
+          configuracion,
 
-          })
+          function(texto) {
 
-          .catch(function() {
+            procesarQR(texto);
 
-            window.location.href =
-              decodedText;
+          },
 
-          });
+          function(error) {
 
-      },
+            // Error normal mientras busca el QR.
 
-      function(errorMessage) {
+          }
 
-        // Ignorar errores normales
-        // mientras busca el QR.
+        )
+
+        .catch(function(error) {
+
+          document
+            .getElementById("lectorQR")
+            .innerHTML = `
+
+              <div style="
+                text-align:center;
+                padding:20px;
+                color:#8a4038;
+                font-size:14px;
+                line-height:1.6;
+              ">
+
+                No se pudo acceder a la cámara.
+
+                <br><br>
+
+                Comprueba que el navegador
+                tenga permiso para usar la cámara.
+
+              </div>
+
+            `;
+
+          console.error(error);
+
+        });
+
+    }
+
+
+    // ==========================================
+    // PROCESAR QR
+    // ==========================================
+
+    function procesarQR(texto) {
+
+      detenerScanner();
+
+
+      let id = "";
+
+
+      try {
+
+        const url =
+          new URL(texto);
+
+        id =
+          url.searchParams.get("id") || "";
 
       }
 
-    )
+      catch(error) {
 
-    .then(function() {
+        id =
+          texto.trim();
 
-      mensaje.innerText =
-        "Apunta la cámara hacia el código QR.";
-
-    })
-
-    .catch(function(error) {
-
-      console.error(error);
-
-      mensaje.innerText =
-        "No se pudo acceder a la cámara. " +
-        "Revisa los permisos del navegador.";
-
-    });
-
-  }
+      }
 
 
-  // ==========================================
-  // INICIAR AUTOMÁTICAMENTE
-  // ==========================================
+      id =
+        String(id)
+          .trim()
+          .replace(/\D/g, "");
 
-  iniciarScanner();
+
+      if (!id) {
+
+        alert(
+          "El código QR no contiene un ID válido."
+        );
+
+        location.reload();
+
+        return;
+
+      }
 
 
-</script>
+      // ==========================================
+      // ENVIAR AL NUEVO APPS SCRIPT
+      // ==========================================
 
+      window.location.href =
+        URL_APPS_SCRIPT +
+        "?id=" +
+        encodeURIComponent(id);
+
+    }
+
+
+    // ==========================================
+    // DETENER SCANNER
+    // ==========================================
+
+    function detenerScanner() {
+
+      if (!scanner) {
+        return;
+      }
+
+
+      scanner
+        .stop()
+        .then(function() {
+
+          scanner.clear();
+
+          scanner = null;
+
+        })
+        .catch(function() {
+
+          scanner = null;
+
+        });
+
+    }
+
+
+    // ==========================================
+    // VOLVER AL PANEL
+    // ==========================================
+
+    function volverAlPanel() {
+
+      detenerScanner();
+
+
+      // IMPORTANTE:
+      // Siempre vuelve a la NUEVA URL
+
+      window.location.href =
+        URL_APPS_SCRIPT;
+
+    }
+
+  </script>
 
 </body>
 
