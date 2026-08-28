@@ -92,10 +92,18 @@
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease;
     }
 
     .volver:hover {
       background: #f7f4f1;
+      transform: translateY(-1px);
+    }
+
+    .volver:active {
+      transform: translateY(0);
     }
 
   </style>
@@ -111,7 +119,6 @@
       <div class="institucion">
 
         INSTITUCIÓN EDUCATIVA 7701<br>
-
         "NUESTRA SEÑORA DEL CARMEN"
 
       </div>
@@ -145,20 +152,20 @@
 
   <script>
 
-    let scanner = null;
-
-
-    // ==========================================
+    // ==================================================
     // URL CORRECTA DEL PANEL DE PROFESORES
-    // ==========================================
+    // ==================================================
 
     const URL_APPS_SCRIPT =
       "https://script.google.com/macros/s/AKfycbwNwcizIghVwKUjZB-kdZEkWG1uewXd2VVaP_AFascrsH2NtFZ0ygN_4juO7L8n-Lbm/exec";
 
 
-    // ==========================================
-    // INICIAR SCANNER
-    // ==========================================
+    let scanner = null;
+
+
+    // ==================================================
+    // INICIAR LECTOR
+    // ==================================================
 
     window.addEventListener(
       "load",
@@ -232,7 +239,7 @@
 
               </div>
 
-            `;
+          `;
 
           console.error(error);
 
@@ -241,9 +248,9 @@
     }
 
 
-    // ==========================================
+    // ==================================================
     // PROCESAR QR
-    // ==========================================
+    // ==================================================
 
     function procesarQR(texto) {
 
@@ -266,7 +273,7 @@
       catch(error) {
 
         id =
-          texto.trim();
+          String(texto || "").trim();
 
       }
 
@@ -290,9 +297,9 @@
       }
 
 
-      // ==========================================
-      // ENVIAR AL NUEVO APPS SCRIPT
-      // ==========================================
+      // ==================================================
+      // ENVIAR AL GOOGLE APPS SCRIPT NUEVO
+      // ==================================================
 
       window.location.href =
         URL_APPS_SCRIPT +
@@ -302,9 +309,9 @@
     }
 
 
-    // ==========================================
+    // ==================================================
     // DETENER SCANNER
-    // ==========================================
+    // ==================================================
 
     function detenerScanner() {
 
@@ -317,7 +324,10 @@
         .stop()
         .then(function() {
 
-          scanner.clear();
+          try {
+            scanner.clear();
+          }
+          catch(error) {}
 
           scanner = null;
 
@@ -331,17 +341,16 @@
     }
 
 
-    // ==========================================
+    // ==================================================
     // VOLVER AL PANEL
-    // ==========================================
+    // ==================================================
 
     function volverAlPanel() {
 
       detenerScanner();
 
 
-      // IMPORTANTE:
-      // Siempre vuelve a la NUEVA URL
+      // SIEMPRE REGRESA AL APPS SCRIPT NUEVO
 
       window.location.href =
         URL_APPS_SCRIPT;
