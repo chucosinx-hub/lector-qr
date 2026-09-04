@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 
@@ -350,10 +351,14 @@
       detenerScanner();
 
 
-      // SIEMPRE REGRESA AL APPS SCRIPT NUEVO
+      // Esperar un momento para que la cámara
+      // termine de cerrarse antes de cambiar de página.
 
-      window.location.href =
-        URL_APPS_SCRIPT;
+      setTimeout(function() {
+
+        window.location.replace(URL_APPS_SCRIPT);
+
+      }, 300);
 
     }
 
@@ -362,3 +367,4 @@
 </body>
 
 </html>
+```
